@@ -13,4 +13,5 @@ class Usercontent(db.Model):
     user = db.relationship('User', backref=db.backref('usercontent_set'))
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+    modify_date = db.Column(db.DateTime(), nullable=True)
     filename = db.Column(db.String(200), nullable=False)

@@ -14,3 +14,8 @@ class UserCreateForm(FlaskForm):
 class UserLoginForm(FlaskForm):
     username = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired()])
+
+class UserContentForm(FlaskForm):
+    username = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
+    content = TextAreaField('내용', validators=[DataRequired()])
+    filename = StringField('파일이름', validators=[DataRequired()])

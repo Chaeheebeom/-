@@ -7,7 +7,7 @@ from main import db
 
 from datetime import datetime
 
-from Forms.userForms import UserCreateForm, UserLoginForm
+from Forms.userForms import UserCreateForm, UserLoginForm, UserContentForm
 from models.Model import User,Usercontent
 
 bp = Blueprint('auth' ,__name__, url_prefix='/')
@@ -86,3 +86,22 @@ def detail(content_id):
     user_name = session.get('user_name')
     content = Usercontent.query.filter_by(username=user_name,id=content_id).first()
     return render_template('client/detail.html', content=content)
+
+@bp.route('/modify/<int:content_id>/', methods=('GET','POST'))
+def modify(content_id):
+    content=Usercontent.query.filter_by(id=content_id).first()
+    if request.method == 'POST':
+        content.content=request.form['content']
+        content.modify_date=datetime.now()
+        db.session.commit()
+        return redirect(url_for('auth.detail', content_id=content_id))
+    else:
+        form=UserContentForm(obj=content)
+    return render_template('client/modify.html',form=form)
+
+@bp.route('/delete/<int:content_id>')
+def delete(content_id):
+    content = Usercontent.query.get_or_404(content_id)
+    db.session.delete(content)
+    db.session.commit()
+    return redirect(url_for('auth.mypage'))

@@ -7,20 +7,26 @@
     <img class="card-img-top" src="{{ url_for('static',filename = 'img/' + content.filename ) }}" alt="Card image cap">
             <div class="card-body">
                 <div class="card-text">{{ content.content }}</div>
+
+
                 <div class="d-flex justify-content-end">
                     <div class="badge badge-light p-2 text-left">
                         <div class="mb-2">{{ content.username }}</div>
-                        <div>{{ content.create_date }}</div>
+                        {% if content.modify_date %}
+                            <div>{{ content.modify_date }}</div>
+                        {% else %}
+                            <div>{{ content.create_date }}</div>
+                        {% endif %}
                     </div>
                 </div>
                 {% if g.user == content.user %}
                 <div class="my-3">
                     <!--수정버튼-->
-                    <a href="#"
+                    <a href="{{ url_for('auth.modify', content_id=content.id ) }}"
                     class="btn btn-sm btn-outline-secondary">수정</a>
                     <!--삭제버튼-->
-                    <a href="#" class="delete btn btn-sm btn-outline-secondary"
-                    data-uri="#">삭제</a>
+                    <a href="{{ url_for('auth.delete', content_id=content.id) }}"
+                       class="delete btn btn-sm btn-outline-secondary">삭제</a>
                 </div>
             {% endif %}
 
