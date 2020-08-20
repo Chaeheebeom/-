@@ -9,7 +9,10 @@
     <ul class="navbar-nav mr-auto">
     {% if g.user %}
       <li class="nav-item ">
-        <a class="nav-link" href="{{ url_for('auth.imgupload') }}">{{ g.user.username }}</a>
+        <a class="nav-link" href="{{ url_for('auth.imgupload') }}">업로드</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('auth.mypage') }}">{{ g.user.username }}</a>
       </li>
       <li class="nav-item ">
         <a class="nav-link" href="{{ url_for('auth.signout') }}">(로그아웃)</a>

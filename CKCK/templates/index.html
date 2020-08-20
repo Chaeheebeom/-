@@ -21,9 +21,11 @@
 <div class="grid">
   <div class="grid-sizer"></div>
 {% if True %}
-        {% for img in img_list %}
+        {% for content in content_list %}
             <div class="grid-item">
-                <img src="{{ url_for('static',filename = img ) }}"/>
+                <a href="{{ url_for('main.detail', content_id=content.id) }}">
+                    <img src="{{ url_for('static',filename = 'img/' + content.filename  ) }}"/>
+                </a>
             </div>
         {% endfor %}
 {% endif %}

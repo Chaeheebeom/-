@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- main CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- main js -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+<div class="grid">
+  <div class="grid-sizer"></div>
+    {% if True %}
+        {% for content in content_list %}
+            <div class="grid-item">
+                <a href="{{ url_for('auth.detail', content_id=content.id) }}">
+                <img src="{{ url_for('static',filename = 'img/' + content.filename ) }}"/>
+                </a>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -5,8 +5,10 @@ from werkzeug.utils import redirect,secure_filename
 
 from main import db
 
+from datetime import datetime
+
 from Forms.userForms import UserCreateForm, UserLoginForm
-from models.Model import User
+from models.Model import User,Usercontent
 
 bp = Blueprint('auth' ,__name__, url_prefix='/')
 
@@ -39,6 +41,7 @@ def signin():
         if error is None:
             session.clear()
             session['user_id'] = user.id
+            session['user_name'] = user.username
             return redirect(url_for('main.root'))
         flash(error)
     return render_template('auth/signin.html', form=form)
@@ -62,6 +65,24 @@ def imgupload():
 
     if request.method == 'POST':
         file = request.files['file']
+        content = request.form['content']
+        user = User.query.get_or_404(user_id)
+        usercontent=Usercontent(username=user_id,content=content,create_date=datetime.now(),filename=file.filename)
+        user.usercontent_set.append(usercontent)
+        db.session.commit()
         file.save("static/img/"+secure_filename(file.filename))
         return redirect(url_for('main.root'))
     return render_template('auth/fileupload.html')
+
+@bp.route('/mypage/',methods=('GET','POST'))
+def mypage():
+    user_name = session.get('user_name')
+    user_id = session.get('user_id')
+    content_list = Usercontent.query.filter_by(username=user_name).order_by(Usercontent.create_date.desc()).all()
+    return render_template('client/mypage.html', content_list=content_list)
+
+@bp.route('/detail/<int:content_id>/')
+def detail(content_id):
+    user_name = session.get('user_name')
+    content = Usercontent.query.filter_by(username=user_name,id=content_id).first()
+    return render_template('client/detail.html', content=content)
