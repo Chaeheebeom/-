@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--
+<div class="row">
+  <div class="col-xs-6 col-md-3">
+    {% if True %}
+        {% for img in img_list %}
+            <a href=#" class="thumbnail">
+            <img src="{{ url_for('static',filename = img ) }}" alt="">
+            </a>
+        {% endfor %}
+{% endif %}
+  </div>
+</div>
+-->
+<!-- main CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- main js -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<div class="grid">
+  <div class="grid-sizer"></div>
+{% if True %}
+        {% for img in img_list %}
+            <div class="grid-item">
+                <img src="{{ url_for('static',filename = img ) }}"/>
+            </div>
+        {% endfor %}
+{% endif %}
+</div>
+
+{% endblock %}
