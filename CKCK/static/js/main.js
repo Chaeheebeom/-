@@ -1,4 +1,4 @@
-// external js: masonry.pkgd.js, imagesloaded.pkgd.js
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
 // init Masonry
 var $grid = $('.grid').masonry({
@@ -6,7 +6,9 @@ var $grid = $('.grid').masonry({
   percentPosition: true,
   columnWidth: '.grid-sizer'
 });
+
 // layout Masonry after each image loads
 $grid.imagesLoaded().progress( function() {
   $grid.masonry();
 });
+

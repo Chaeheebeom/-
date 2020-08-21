@@ -15,3 +15,14 @@ class Usercontent(db.Model):
     create_date = db.Column(db.DateTime(), nullable=False)
     modify_date = db.Column(db.DateTime(), nullable=True)
     filename = db.Column(db.String(200), nullable=False)
+
+#댓글을 위한 모델
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False)
+    user = db.relationship('User', backref=db.backref('comment_set'))
+    content = db.Column(db.Text(),nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False)
+    modify_date = db.Column(db.DateTime(), nullable=True)
+    usercontent_id = db.Column(db.Integer,db.ForeignKey('usercontent.id',ondelete='CASCADE'),nullable=True)
+    usercontent = db.relationship('Usercontent',backref=db.backref('comment_set'))

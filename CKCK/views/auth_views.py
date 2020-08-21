@@ -10,7 +10,7 @@ from datetime import datetime
 from Forms.userForms import UserCreateForm, UserLoginForm, UserContentForm
 from models.Model import User,Usercontent
 
-bp = Blueprint('auth' ,__name__, url_prefix='/')
+bp = Blueprint('auth' ,__name__, url_prefix='/auth')
 
 @bp.route('/signup/',methods=('GET','POST'))
 def signup():
@@ -83,8 +83,7 @@ def mypage():
 
 @bp.route('/detail/<int:content_id>/')
 def detail(content_id):
-    user_name = session.get('user_name')
-    content = Usercontent.query.filter_by(username=user_name,id=content_id).first()
+    content = Usercontent.query.filter_by(id=content_id).first()
     return render_template('client/detail.html', content=content)
 
 @bp.route('/modify/<int:content_id>/', methods=('GET','POST'))

@@ -6,7 +6,11 @@ bp = Blueprint('main' ,__name__, url_prefix='/')
 
 @bp.route('/root/')
 def root():
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.main'))
+
+@bp.route('/')
+def main():
+    return render_template('index.html',main='main')
 
 @bp.route('/index/')
 def index():
