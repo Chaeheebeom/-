@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 
 from models.Model import Usercontent
 
-bp = Blueprint('main' ,__name__, url_prefix='/')
+from Forms.Form import SearchForm
+
+bp = Blueprint('main' , __name__, url_prefix='/')
 
 @bp.route('/root/')
 def root():
@@ -30,3 +32,11 @@ def detail(content_id):
 #    import glob
 #    ret = glob.glob('static/img/*.jpg')
 #    return ret
+
+@bp.route('/search/',methods=('GET','POST'))
+def search():
+    print('dsds')
+    if request.method == 'POST':
+        subject=request.form['subject']
+        content_list=Usercontent.query.filter(Usercontent.content.like("%"+subject+"%")).all()
+        return render_template('index.html',content_list=content_list)

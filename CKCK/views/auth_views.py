@@ -8,7 +8,7 @@ from main import db
 from datetime import datetime
 
 from Forms.userForms import UserCreateForm, UserLoginForm, UserContentForm
-from models.Model import User,Usercontent
+from models.Model import User,Usercontent, usercontent_like_voter, comment_like_voter
 
 bp = Blueprint('auth' ,__name__, url_prefix='/auth')
 
@@ -77,7 +77,6 @@ def imgupload():
 @bp.route('/mypage/',methods=('GET','POST'))
 def mypage():
     user_name = session.get('user_name')
-    user_id = session.get('user_id')
     content_list = Usercontent.query.filter_by(username=user_name).order_by(Usercontent.create_date.desc()).all()
     return render_template('client/mypage.html', content_list=content_list)
 

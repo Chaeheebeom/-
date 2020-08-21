@@ -3,8 +3,16 @@
 
 {% if True %}
 
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
 <div class="card" style="width: 40rem;">
     <img class="card-img-top" src="{{ url_for('static',filename = 'img/' + content.filename ) }}" alt="Card image cap">
+    <div style="font-size: 30px; padding-left: 10px">
+        <!--게시글 좋아요 버튼-->
+        <a href="{{ url_for('vote.usercontentlike', usercontent_id=content.id) }}"><i class="far fa-thumbs-up"></i></a>
+
+    </div>
+
             <div class="card-body">
                 <div class="card-text">{{ content.content }}</div>
 
@@ -12,9 +20,9 @@
                     <div class="badge badge-light p-2 text-left">
                         <div class="mb-2">{{ content.username }}</div>
                         {% if content.modify_date %}
-                            <div>{{ content.modify_date }}</div>
+                            <div>{{ content.modify_date|datetime }}</div>
                         {% else %}
-                            <div>{{ content.create_date }}</div>
+                            <div>{{ content.create_date|datetime }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -35,12 +43,13 @@
             {% for comment in content.comment_set %}
                 <div class="comment py-2 text-muted">
                     <span style="white-space: pre-line;">{{ comment.content }}</span>
+                    <a href="{{ url_for('vote.commentlike', comment_id=comment.id) }}"><i class="far fa-thumbs-up"></i></a>
                     <span>
                         - {{ comment.user.username }},
                         {% if comment.modify_date %}
-                            {{ comment.modify_date }}
+                            {{ comment.modify_date|datetime }}
                         {% else %}
-                            {{ comment.create_date }}
+                            {{ comment.create_date|datetime }}
                         {% endif %}
                     </span>
                     {% if g.user == comment.user %}
