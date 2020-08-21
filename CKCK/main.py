@@ -3,6 +3,8 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+from flaskext.markdown import Markdown
+
 import config
 
 db = SQLAlchemy()
@@ -26,6 +28,9 @@ def create_app():
     #필터
     from filter import format_datetime
     app.jinja_env.filters['datetime'] = format_datetime
+
+    #마크다운
+    Markdown(app,extension=['nl2br','fenced_code'])
 
     return app
 
