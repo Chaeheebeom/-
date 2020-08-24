@@ -9,8 +9,11 @@
     <img class="card-img-top" src="{{ url_for('static',filename = 'img/' + content.filename ) }}" alt="Card image cap">
     <div style="font-size: 30px; padding-left: 10px">
         <!--게시글 좋아요 버튼-->
-        <a href="{{ url_for('vote.usercontentlike', usercontent_id=content.id) }}"><i class="far fa-thumbs-up"></i></a>
-
+        {% if islike == 0 %}
+            <a href="{{ url_for('vote.usercontentlike', usercontent_id=content.id) }}"><i class="far fa-thumbs-up"></i></a>
+        {% elif islike == 1 %}
+            <a href="{{ url_for('vote.cancle', usercontent_id=content.id, user_id=g.user.id) }}"><i class="fas fa-thumbs-up"></i></a>
+        {% endif %}
     </div>
 
             <div class="card-body">
@@ -36,14 +39,27 @@
                        class="delete btn btn-sm btn-outline-secondary">삭제</a>
                 </div>
             {% endif %}
-
  <!-- 질문 댓글 Start -->
             {% if content.comment_set|length > 0 %}
             <div class="mt-3">
             {% for comment in content.comment_set %}
                 <div class="comment py-2 text-muted">
                     <span style="white-space: pre-line;">{{ comment.content|markdown }}</span>
-                    <a href="{{ url_for('vote.commentlike', comment_id=comment.id) }}"><i class="far fa-thumbs-up"></i></a>
+                    <!--게시글 좋아요 버튼-->
+                    <!--좋아요버튼-->
+                    {% set isComment = namespace(is=true) %}
+                    {% for voter in commentlike %}
+                        {% if voter[0] == comment.id %}
+                            {% set isComment.is = false %}
+                            {% break %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if isComment.is %}
+                        <a href="{{ url_for('vote.commentlike', comment_id=comment.id) }}"><i class="far fa-thumbs-up"></i></a>
+                    {% else %}
+                        <a href="{{ url_for('vote.commentcancle', comment_id=comment.id, user_id=g.user.id, usercontent_id=content.id) }}"><i class="fas fa-thumbs-up"></i></a>
+                    {% endif %}
                     <span>
                         - {{ comment.user.username }},
                         {% if comment.modify_date %}

@@ -7,7 +7,9 @@ from main import db
 
 from datetime import datetime
 
-from models.Model import User,Usercontent,Comment
+from sqlalchemy import select,delete
+
+from models.Model import User,Usercontent,Comment,usercontent_like_voter,comment_like_voter
 
 bp = Blueprint('vote' ,__name__, url_prefix='/vote')
 
@@ -25,3 +27,19 @@ def commentlike(comment_id):
     db.session.commit()
 
     return redirect(url_for('auth.detail',content_id=comment.usercontent_id))
+
+@bp.route('/cancle/<int:usercontent_id>/<int:user_id>/')
+def cancle(usercontent_id,user_id):
+    q=usercontent_like_voter.delete().where(
+        usercontent_like_voter.c.usercontent_id == usercontent_id).where(usercontent_like_voter.c.user_id == user_id)
+    db.session.execute(q)
+    db.session.commit()
+    return redirect(url_for('auth.detail',content_id=usercontent_id))
+
+@bp.route('/cancle/<int:comment_id>/<int:user_id>/<int:usercontent_id>/')
+def commentcancle(comment_id,user_id,usercontent_id):
+    q=comment_like_voter.delete().where(
+        comment_like_voter.c.comment_id == comment_id).where(comment_like_voter.c.user_id == user_id)
+    db.session.execute(q)
+    db.session.commit()
+    return redirect(url_for('auth.detail',content_id=usercontent_id))

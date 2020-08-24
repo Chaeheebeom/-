@@ -24,7 +24,7 @@
   <div class="grid-sizer"></div>
         {% for content in content_list %}
             <div class="grid-item">
-                <a href="{{ url_for('main.detail', content_id=content.id) }}">
+                <a href="{{ url_for('auth.detail', content_id=content.id) }}">
                     <img src="{{ url_for('static',filename = 'img/' + content.filename  ) }}"/>
                 </a>
             </div>

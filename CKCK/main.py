@@ -28,6 +28,8 @@ def create_app():
     #필터
     from filter import format_datetime
     app.jinja_env.filters['datetime'] = format_datetime
+    #진자2에 break를 사용하기위함
+    app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
     #마크다운
     Markdown(app,extension=['nl2br','fenced_code'])

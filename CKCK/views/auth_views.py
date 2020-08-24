@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect,secure_filename
 
 from main import db
+from sqlalchemy import select
 
 from datetime import datetime
 
@@ -83,7 +84,19 @@ def mypage():
 @bp.route('/detail/<int:content_id>/')
 def detail(content_id):
     content = Usercontent.query.filter_by(id=content_id).first()
-    return render_template('client/detail.html', content=content)
+    user_id = session.get('user_id')
+    #게시글에 본인이 좋아요 했는지 확인.
+    s=select(usercontent_like_voter.columns).where(usercontent_like_voter.c.usercontent_id==content_id).where(usercontent_like_voter.c.user_id==user_id)
+    data=db.session.query(s).all()
+    isLike = 0
+    if len(data) == 1:
+        isLike=1
+    #댓글 좋아요
+    s=select(comment_like_voter.columns).where(comment_like_voter.c.user_id==user_id)
+    data=db.session.query(s).all()
+ 
+
+    return render_template('client/detail.html', content=content,islike=isLike,commentlike=data)
 
 @bp.route('/modify/<int:content_id>/', methods=('GET','POST'))
 def modify(content_id):
